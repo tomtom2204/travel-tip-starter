@@ -60,6 +60,7 @@ function renderLocs(locs) {
     elLocList.innerHTML = strHTML || 'No locs to show'
 
     renderLocStats()
+    renderLocLastUpdated()
 
     if (selectedLocId) {
         const selectedLoc = locs.find(loc => loc.id === selectedLocId)
@@ -266,6 +267,14 @@ function renderLocStats() {
         handleStats(stats, 'loc-stats-rate')
     })
 }
+
+function renderLocLastUpdated() {
+    locService.getLocCountByLastUpdatedMap().then(stats => {
+        console.log('stats:', stats)
+        handleStats(stats, 'loc-stats-lastUpdated')
+    })
+}
+
 
 function handleStats(stats, selector) {
     // stats = { low: 37, medium: 11, high: 100, total: 148 }
