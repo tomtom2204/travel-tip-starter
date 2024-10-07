@@ -69,11 +69,22 @@ function renderLocs(locs) {
 }
 
 function onRemoveLoc(locId) {
+
+    const locName = locService.getById(locId)
+    .then(loc => {
+        return loc.name
+    })
+
+    
     locService.remove(locId)
-        .then(() => {
-            flashMsg('Location removed')
-            unDisplayLoc()
-            loadAndRenderLocs()
+    .then(() => {
+        flashMsg('Location removed')
+        unDisplayLoc()
+        loadAndRenderLocs()
+        
+        locName.then(res => {
+            confirm(`${res} was deleted successfully!`)         
+            })
         })
         .catch(err => {
             console.error('OOPs:', err)
@@ -251,7 +262,7 @@ function onSetFilterBy({ txt, minRate }) {
 
 function renderLocStats() {
     locService.getLocCountByRateMap().then(stats => {
-        console.log('stats:', stats)
+        // console.log('stats:', stats)
         handleStats(stats, 'loc-stats-rate')
     })
 }
